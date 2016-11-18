@@ -11,7 +11,7 @@ class Complication: NSObject, CLKComplicationDataSource {
             let template = CLKComplicationTemplateModularLargeTallBody()
             var stepCountString = UserDefaults.standard.string(forKey: "stepCount")
             if (stepCountString == nil) {
-                stepCountString = "None"
+                stepCountString = "0"
             }
             template.bodyTextProvider = CLKSimpleTextProvider(text: stepCountString!)
             template.headerTextProvider = CLKSimpleTextProvider(text: "Step Count")

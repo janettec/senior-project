@@ -87,6 +87,9 @@ class ConfigurationInterfaceController: WKInterfaceController {
 //        workoutConfiguration.activityType = selectedActivityType
 //        workoutConfiguration.locationType = selectedLocationType
         UserDefaults.standard.set(selectedParticipantNumber, forKey: "participantNumber")
+        UserDefaults.standard.set(Date(), forKey: "stepLastDate")
+        UserDefaults.standard.set(Date(), forKey: "heartLastDate")
+        UserDefaults.standard.set("0", forKey: "stepCount")
         // Pass configuration to next interface controller
         WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: [workoutConfiguration])
     }

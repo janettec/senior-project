@@ -7,12 +7,6 @@
  */
 
 import WatchKit
-import HealthKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
-    // MARK: WKExtensionDelegate
-    
-    func handle(_ workoutConfiguration: HKWorkoutConfiguration) {
-        WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: [workoutConfiguration])
-    }
 }
