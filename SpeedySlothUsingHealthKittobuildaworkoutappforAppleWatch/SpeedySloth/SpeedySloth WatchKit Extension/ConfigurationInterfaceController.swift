@@ -70,6 +70,21 @@ class ConfigurationInterfaceController: WKInterfaceController {
         
         setTitle("Speedy Sloth")
     }
+    
+    private func requestAccessToHealthKit() {
+        let healthStore = HKHealthStore()
+        
+        let allTypes = Set([HKObjectType.workoutType(),
+                            HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.activeEnergyBurned)!,
+                            HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.heartRate)!,
+                            HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!])
+        
+        healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { (success, error) in
+            if !success {
+                print(error ?? "Error occured requesting access to HealthKit")
+            }
+        }
+    }
 
     // MARK: IB Actions
     
@@ -90,6 +105,7 @@ class ConfigurationInterfaceController: WKInterfaceController {
         UserDefaults.standard.set(Date(), forKey: "stepLastDate")
         UserDefaults.standard.set(Date(), forKey: "heartLastDate")
         UserDefaults.standard.set("0", forKey: "stepCount")
+        requestAccessToHealthKit()
         // Pass configuration to next interface controller
         WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: [workoutConfiguration])
     }

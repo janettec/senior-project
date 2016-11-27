@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
-        self.requestAccessToHealthKit()
+        //self.requestAccessToHealthKit()
         WatchSessionManager.sharedManager.startSession()
         return true
     }
@@ -31,8 +31,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { (success, error) in
             if !success {
-                print(error)
+                print(error ?? "Error occured requesting access to HealthKit")
             }
+        }
+    }
+    
+    func applicationShouldRequestHealthAuthorization(_ application: UIApplication) {
+        let healthStore = HKHealthStore()
+        healthStore.handleAuthorizationForExtension { (success, error) -> Void in
+            self.requestAccessToHealthKit()
         }
     }
 }
