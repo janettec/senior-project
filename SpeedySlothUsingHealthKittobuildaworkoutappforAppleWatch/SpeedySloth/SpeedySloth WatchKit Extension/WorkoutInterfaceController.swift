@@ -11,11 +11,12 @@ import Foundation
 import HealthKit
 import ClockKit
 import WatchConnectivity
+import UserNotifications
 
 class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate {
     // MARK: Properties,
     
-    let timeBetweenRefresh = 10.0 * 60.0 // CHANGE TO SOMETHING MORE REASONABLE LATER
+    let timeBetweenRefresh = 5.0 // CHANGE TO SOMETHING MORE REASONABLE LATER
     
     let healthStore = HKHealthStore()
     
@@ -419,6 +420,22 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate {
 //    }
     
     
+    func notifyUser() {
+        
+        let content = UNMutableNotificationContent()
+        
+        content.title = "Goal Progress"
+        content.body = String(format: "Another 1000 steps! Current step count: %0.f", self.totalModSteps())
+        content.sound = UNNotificationSound.default()
+        
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 2, repeats: false)
+        let request = UNNotificationRequest.init(identifier: "StepUpdate", content: content, trigger: trigger)
+        
+        let center = UNUserNotificationCenter.current()
+        center.add(request) { (error) in
+            print(error)
+        }
+    }
     
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         var stepsFinished = false
@@ -570,6 +587,8 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate {
                                                 
                                                 strongSelf.setTotalSteps(steps: totalSteps)
                                                 strongSelf.updateLabels()
+                                                
+                                                strongSelf.notifyUser()
                                                 
                                                 UserDefaults.standard.set(String(format: "%.0f", strongSelf.totalModSteps()), forKey: "stepCount")
                                                 let complicationServer = CLKComplicationServer.sharedInstance()

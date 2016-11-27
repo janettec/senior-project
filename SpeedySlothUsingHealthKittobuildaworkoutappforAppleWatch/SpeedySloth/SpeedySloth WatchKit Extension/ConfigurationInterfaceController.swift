@@ -9,6 +9,7 @@
 import WatchKit
 import Foundation
 import HealthKit
+import UserNotifications
 
 class ConfigurationInterfaceController: WKInterfaceController {
     // MARK: Properties
@@ -85,6 +86,15 @@ class ConfigurationInterfaceController: WKInterfaceController {
             }
         }
     }
+    
+    private func requestAllowNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            if !granted {
+                print(error ?? "Error occured requesting notifications")
+            }
+        }
+    }
 
     // MARK: IB Actions
     
@@ -106,6 +116,7 @@ class ConfigurationInterfaceController: WKInterfaceController {
         UserDefaults.standard.set(Date(), forKey: "heartLastDate")
         UserDefaults.standard.set("0", forKey: "stepCount")
         requestAccessToHealthKit()
+        requestAllowNotifications()
         // Pass configuration to next interface controller
         WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: [workoutConfiguration])
     }

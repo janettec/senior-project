@@ -63,8 +63,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "274"
             endingLineNumber = "274"
-            landmarkName = "WorkoutInterfaceController"
-            landmarkType = "3">
+            landmarkName = "process(samples:quantityTypeIdentifier:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -134,7 +134,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
@@ -159,116 +159,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "424"
             endingLineNumber = "424"
-            landmarkName = "handle(_:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SpeedySloth_WatchKit_Extension.WorkoutInterfaceController.handle (Swift.Set&lt;__ObjC.WKRefreshBackgroundTask&gt;) -&gt; ()"
-                  moduleName = "SpeedySloth WatchKit Extension"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Janette/Desktop/cs191w/senior-project/SpeedySlothUsingHealthKittobuildaworkoutappforAppleWatch/SpeedySloth/SpeedySloth%20WatchKit%20Extension/WorkoutInterfaceController.swift"
-                  timestampString = "501201864.756188"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "424"
-                  endingLineNumber = "424"
-                  offsetFromSymbolStart = "108">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SpeedySloth_WatchKit_Extension.WorkoutInterfaceController.(handle (Swift.Set&lt;__ObjC.WKRefreshBackgroundTask&gt;) -&gt; ()).(closure #1)"
-                  moduleName = "SpeedySloth WatchKit Extension"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Janette/Desktop/cs191w/senior-project/SpeedySlothUsingHealthKittobuildaworkoutappforAppleWatch/SpeedySloth/SpeedySloth%20WatchKit%20Extension/WorkoutInterfaceController.swift"
-                  timestampString = "501201864.758171"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "424"
-                  endingLineNumber = "424"
-                  offsetFromSymbolStart = "44">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SpeedySloth_WatchKit_Extension.WorkoutInterfaceController.(handle (Swift.Set&lt;__ObjC.WKRefreshBackgroundTask&gt;) -&gt; ()).(closure #1).(closure #1)"
-                  moduleName = "SpeedySloth WatchKit Extension"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Janette/Desktop/cs191w/senior-project/SpeedySlothUsingHealthKittobuildaworkoutappforAppleWatch/SpeedySloth/SpeedySloth%20WatchKit%20Extension/WorkoutInterfaceController.swift"
-                  timestampString = "501201864.759805"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "424"
-                  endingLineNumber = "424"
-                  offsetFromSymbolStart = "52">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SpeedySloth_WatchKit_Extension.WorkoutInterfaceController.(handle (Swift.Set&lt;__ObjC.WKRefreshBackgroundTask&gt;) -&gt; ()).(closure #2)"
-                  moduleName = "SpeedySloth WatchKit Extension"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Janette/Desktop/cs191w/senior-project/SpeedySlothUsingHealthKittobuildaworkoutappforAppleWatch/SpeedySloth/SpeedySloth%20WatchKit%20Extension/WorkoutInterfaceController.swift"
-                  timestampString = "501201864.761298"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "424"
-                  endingLineNumber = "424"
-                  offsetFromSymbolStart = "64">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SpeedySloth_WatchKit_Extension.WorkoutInterfaceController.(handle (Swift.Set&lt;__ObjC.WKRefreshBackgroundTask&gt;) -&gt; ()).(closure #2).(closure #1)"
-                  moduleName = "SpeedySloth WatchKit Extension"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Janette/Desktop/cs191w/senior-project/SpeedySlothUsingHealthKittobuildaworkoutappforAppleWatch/SpeedySloth/SpeedySloth%20WatchKit%20Extension/WorkoutInterfaceController.swift"
-                  timestampString = "501201864.762629"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "424"
-                  endingLineNumber = "424"
-                  offsetFromSymbolStart = "68">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
-            timestampString = "501201330.583182"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "565"
-            endingLineNumber = "565"
-            landmarkName = "handle(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
-            timestampString = "501201330.583182"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "559"
-            endingLineNumber = "559"
-            landmarkName = "handle(_:)"
+            landmarkName = "notifyUser()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
