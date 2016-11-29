@@ -315,6 +315,9 @@
 						DevelopmentTeam = 8YJ2342CPM;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.HealthKit = {
 								enabled = 1;
 							};
@@ -324,6 +327,11 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 8YJ2342CPM;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes.watchos.app = {
+								enabled = 0;
+							};
+						};
 					};
 					6ECBB85C1CF8E03F003C3D93 = {
 						CreatedOnToolsVersion = 8.0;
