@@ -22,23 +22,13 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
     
     var activeDataQueries = [HKQuery]()
     
-//    let parentConnector = ParentConnector()
-    
     var queryStartDate : Date?
-    
-//    var workoutEndDate : Date?
     
     var totalStepCount = HKQuantity(unit: HKUnit.count(), doubleValue: 0)
     
     var totalEnergyBurned = HKQuantity(unit: HKUnit.kilocalorie(), doubleValue: 0)
     
     var totalDistance = HKQuantity(unit: HKUnit.meter(), doubleValue: 0)
-    
-//    var workoutEvents = [HKWorkoutEvent]()
-    
-//    var metadata = [String: AnyObject]()
-//    
-//    var timer : Timer?
     
     var isPaused = false
     
@@ -49,8 +39,6 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
     // MARK: IBOutlets
     
     @IBOutlet var modifiedStepCountLabel: WKInterfaceLabel!
-    
-    @IBOutlet var actualStepCountLabel: WKInterfaceLabel!
     
     @IBOutlet var pauseResumeButton : WKInterfaceButton!
 //
@@ -74,8 +62,13 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         scheduleBackgroundRefresh(preferredDate: future)
     }
     override func willActivate() {
+        //refreshStepCount()
         WatchSessionManager.sharedManager.startSession()
         super.willActivate()
+    }
+    
+    override func didAppear() {
+        refreshStepCount()
     }
     // MARK: Totals
     
@@ -254,7 +247,6 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
     
     func updateLabels() {
         modifiedStepCountLabel.setText(format(steps: totalModSteps()))
-        actualStepCountLabel.setText(format(steps: totalSteps()))
     }
     
 //    func updateState() {
@@ -497,6 +489,47 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         }
     }
     
+    func refreshStepCount(){
+        let endDate = Date()
+        let calendar = NSCalendar.current
+        let devicePredicate = HKQuery.predicateForObjects(from: [HKDevice.local()])
+        let stepStartDate = calendar.startOfDay(for: endDate)
+        let stepDatePredicate = HKQuery.predicateForSamples(withStart: stepStartDate, end: endDate, options: .strictStartDate)
+        let stepPredicate = NSCompoundPredicate(andPredicateWithSubpredicates:[stepDatePredicate, devicePredicate])
+        
+        guard let stepSampleType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) else {
+            fatalError("*** This method should never fail ***")
+        }
+        
+        let stepQuery = HKStatisticsQuery(quantityType: stepSampleType,
+                                          quantitySamplePredicate: stepPredicate,
+                                          options: .cumulativeSum) { query, result, error in
+                                            
+                                            guard let quantity = result?.sumQuantity() else {
+                                                print("An error occured fetching the user's step count data. The error was: \(error?.localizedDescription)");
+                                                return
+                                            }
+                                            
+                                            let unit = HKUnit.count()
+                                            let totalSteps = quantity.doubleValue(for: unit)
+                                            
+                                            DispatchQueue.main.async { [weak self] in
+                                                guard let strongSelf = self, !strongSelf.isPaused else { return }
+                                                strongSelf.setTotalSteps(steps: totalSteps)
+                                                strongSelf.updateLabels()
+                                                UserDefaults.standard.set(String(format: "%.0f", strongSelf.totalModSteps()), forKey: "stepCount")
+                                                let complicationServer = CLKComplicationServer.sharedInstance()
+                                                for complication in complicationServer.activeComplications! {
+                                                    complicationServer.reloadTimeline(for: complication)
+                                                }
+                                            }
+                                            
+        }
+        
+        healthStore.execute(stepQuery)
+
+    }
+    
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         let future = Date(timeIntervalSinceNow: self.timeBetweenRefresh)
         self.scheduleBackgroundRefresh(preferredDate: future)
@@ -568,69 +601,6 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         let stepStartDate = calendar.startOfDay(for: endDate)
         let stepDatePredicate = HKQuery.predicateForSamples(withStart: stepStartDate, end: endDate, options: .strictStartDate)
         let stepPredicate = NSCompoundPredicate(andPredicateWithSubpredicates:[stepDatePredicate, devicePredicate])
-        
-//        let stepQuery = HKSampleQuery(sampleType: stepSampleType, predicate: stepPredicate, limit: Int(HKObjectQueryNoLimit), sortDescriptors: [sortDescriptor]) {
-//            query, results, error in
-//            
-//            guard let samples = results as? [HKQuantitySample] else {
-//                fatalError("An error occured fetching the user's step count. The error was: \(error?.localizedDescription)");
-//            }
-//            
-//            DispatchQueue.main.async { [weak self] in
-//                guard let strongSelf = self, !strongSelf.isPaused else { return }
-//                var addedSteps = 0.0
-//                var latest: Date?
-//                latest = nil
-//                for sample in samples {
-//                    print(sample)
-//                    print ("start:")
-//                    print (sample.startDate)
-//                    print ("end:")
-//                    print (sample.endDate)
-//                    if (latest == nil || latest?.compare(sample.endDate) == ComparisonResult.orderedAscending) {
-//                        latest = sample.endDate
-//                    }
-//                    let newSteps = sample.quantity.doubleValue(for: HKUnit.count())
-//                    print(newSteps)
-//                    addedSteps += newSteps
-//                }
-//                if ((latest != nil) && !calendar.isDate(latest!, inSameDayAs: stepStartDate)){
-//                    strongSelf.setTotalSteps(steps: 0.0)
-//                }
-//                strongSelf.setTotalSteps(steps: strongSelf.totalSteps() + addedSteps)
-//                strongSelf.updateLabels()
-//                
-//                UserDefaults.standard.set(String(format: "%.0f", strongSelf.totalModSteps()), forKey: "stepCount")
-//                let complicationServer = CLKComplicationServer.sharedInstance()
-//                for complication in complicationServer.activeComplications! {
-//                    complicationServer.reloadTimeline(for: complication)
-//                }
-//                if (addedSteps > 0.0) { // There were new samples
-//                    _ = WatchSessionManager.sharedManager.transferUserInfo(userInfo: ["stepCount" : strongSelf.totalSteps() as AnyObject, "uid":UserDefaults.standard.integer(forKey: "participantNumber") as AnyObject])
-//                    strongSelf.sendDataToServer(stepCount: strongSelf.totalSteps(), heartRate: nil, date: latest)
-//                }
-//                if (strongSelf.totalSteps() >= Double(strongSelf.stepIncrements * 10)){
-//                    strongSelf.stepIncrements += 1
-//                    strongSelf.vibWatch()
-//                }
-//                if (latest != nil){
-//                    UserDefaults.standard.set(latest, forKey: "stepLastDate")
-//                    print("NEXT STEP START DATE")
-//                    print(latest!)
-//                }
-//                
-//                let future = Date(timeIntervalSinceNow: strongSelf.timeBetweenRefresh)
-//                strongSelf.scheduleBackgroundRefresh(preferredDate: future)
-//                
-//                if (heartFinished) {
-//                    for task : WKRefreshBackgroundTask in backgroundTasks {
-//                        task.setTaskCompleted()
-//                    }
-//                } else {
-//                    stepsFinished = true
-//                }
-//            }
-//        }
         
         let stepQuery = HKStatisticsQuery(quantityType: stepSampleType,
                                           quantitySamplePredicate: stepPredicate,

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch38" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11077"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11508"/>
     </dependencies>
     <scenes>
         <!--ConfigurationInterfaceController-->
@@ -36,15 +39,17 @@
             <objects>
                 <controller identifier="WorkoutInterfaceController" id="3AD-3g-W6O" customClass="WorkoutInterfaceController" customModule="SpeedySloth_WatchKit_Extension">
                     <items>
-                        <label alignment="center" verticalAlignment="center" text="Mod Step Count" textAlignment="center" id="OIZ-b9-Zi2" userLabel="Modified Step Count Label">
-                            <color key="textColor" red="1" green="0.041046944600000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <label alignment="center" verticalAlignment="center" text="Step Count" textAlignment="center" id="Eao-ZG-tZX" userLabel="Step Count Label">
+                            <accessibilityTraits key="accessibilityTraits" staticText="YES" notEnabled="YES"/>
+                            <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="font" type="system" pointSize="16"/>
                         </label>
-                        <label alignment="center" verticalAlignment="center" text="Step Count" textAlignment="center" id="Eao-ZG-tZX" userLabel="Actual Step Count Label">
-                            <color key="textColor" red="0.0" green="0.56638695100000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <label width="1" height="28" alignment="center" verticalAlignment="center" text="Mod Step Count" textAlignment="center" id="OIZ-b9-Zi2" userLabel="Modified Step Count Label">
+                            <color key="textColor" red="0.015686274510000001" green="0.87058823529999996" blue="0.4431372549" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="font" type="system" weight="thin" pointSize="19"/>
                         </label>
                     </items>
                     <connections>
-                        <outlet property="actualStepCountLabel" destination="Eao-ZG-tZX" id="TIK-xB-E0p"/>
                         <outlet property="modifiedStepCountLabel" destination="OIZ-b9-Zi2" id="5yM-q3-WfR"/>
                     </connections>
                 </controller>

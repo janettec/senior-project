@@ -34,8 +34,8 @@ class Complication: NSObject, CLKComplicationDataSource {
     func getPlaceholderTemplate(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTemplate?) -> Swift.Void) {
         if complication.family == .modularLarge {
             let template = CLKComplicationTemplateModularLargeTallBody()
-            template.bodyTextProvider = CLKSimpleTextProvider(text: "hello")
-            template.headerTextProvider = CLKSimpleTextProvider(text: "there")
+            template.bodyTextProvider = CLKSimpleTextProvider(text: "0")
+            template.headerTextProvider = CLKSimpleTextProvider(text: "Step Count")
             handler(template)
         } else {
             handler(nil)

@@ -55,7 +55,7 @@ func format(distance: HKQuantity) -> String {
 
 func format(steps: Double) ->String {
 //    return String(format: "%.1f Steps", steps.doubleValue(for: HKUnit.count()))
-    return String(format: "%.0f Steps", steps)
+    return String(format: "%.0f", steps)
 }
 
 func format(duration: TimeInterval) -> String {

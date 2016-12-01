@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
-            timestampString = "502097500.67034"
+            timestampString = "502257061.446692"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
+            startingLineNumber = "359"
+            endingLineNumber = "359"
             landmarkName = "process(samples:quantityTypeIdentifier:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
-            timestampString = "502097500.67034"
+            timestampString = "502257061.446692"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "367"
-            endingLineNumber = "367"
+            startingLineNumber = "369"
+            endingLineNumber = "369"
             landmarkName = "sendDataToServer(stepCount:heartRate:date:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
-            timestampString = "502097500.67034"
+            timestampString = "502257061.446692"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "380"
-            endingLineNumber = "380"
+            startingLineNumber = "382"
+            endingLineNumber = "382"
             landmarkName = "sendDataToServer(stepCount:heartRate:date:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,29 +106,29 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
-            timestampString = "502097500.67034"
+            timestampString = "502257061.446692"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
+            landmarkName = "notifyEvent(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
+            timestampString = "502257061.446692"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
             landmarkName = "vibWatch()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
-            timestampString = "502097500.67034"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
-            landmarkName = "WorkoutInterfaceController"
-            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -138,12 +138,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
-            timestampString = "502097500.67034"
+            timestampString = "502257061.446692"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "446"
-            endingLineNumber = "446"
-            landmarkName = "notifyUser()"
+            startingLineNumber = "448"
+            endingLineNumber = "448"
+            landmarkName = "resumeAccumulatingData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
+            timestampString = "502257061.446692"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "503"
+            endingLineNumber = "503"
+            landmarkName = "refreshStepCount()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
