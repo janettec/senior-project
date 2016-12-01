@@ -14,55 +14,35 @@ import WatchConnectivity
 import UserNotifications
 
 class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UNUserNotificationCenterDelegate {
-    // MARK: Properties,
+    // MARK: Properties
     
-    let timeBetweenRefresh = 5 * 60.0 // CHANGE TO SOMETHING MORE REASONABLE LATER
+    let timeBetweenRefresh = 5 * 60.0
     
     let healthStore = HKHealthStore()
     
     var activeDataQueries = [HKQuery]()
     
-    var queryStartDate : Date?
-    
     var totalStepCount = HKQuantity(unit: HKUnit.count(), doubleValue: 0)
-    
-    var totalEnergyBurned = HKQuantity(unit: HKUnit.kilocalorie(), doubleValue: 0)
-    
-    var totalDistance = HKQuantity(unit: HKUnit.meter(), doubleValue: 0)
-    
-    var isPaused = false
-    
-    var stepIncrements = 1
     
     var session : WCSession!
 
     // MARK: IBOutlets
     
     @IBOutlet var modifiedStepCountLabel: WKInterfaceLabel!
-    
-    @IBOutlet var pauseResumeButton : WKInterfaceButton!
-//
-    @IBOutlet var markerLabel: WKInterfaceLabel!
 
     // MARK: Interface Controller Overrides
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-//        let center = UNUserNotificationCenter.current()
-//        center.delegate = self
         WKExtension.shared().delegate = self
-        let now = Date()
-        let calendar = NSCalendar.current
-        queryStartDate = calendar.startOfDay(for: now)
         setTotalSteps(steps: modToActualSteps(modified: Double(UserDefaults.standard.string(forKey: "stepCount")!)!))
         updateLabels()
-        // startAccumulatingData(startDate: queryStartDate!)
         let future = Date(timeIntervalSinceNow: timeBetweenRefresh)
         scheduleReset()
         scheduleBackgroundRefresh(preferredDate: future)
     }
     override func willActivate() {
-        //refreshStepCount()
+        refreshStepCount()
         WatchSessionManager.sharedManager.startSession()
         super.willActivate()
     }
@@ -71,104 +51,6 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         refreshStepCount()
     }
     // MARK: Totals
-    
-    
-//    func applicationDidFinishLaunching() {
-//        let center = UNUserNotificationCenter.current()
-//        center.delegate = self
-//        return
-//    }
-//
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-//        let identifier = response.notification.request.identifier
-//        print(identifier)
-//        if identifier.hasPrefix("Reset"){
-//            UserDefaults.standard.set("0", forKey: "stepCount")
-//            let complicationServer = CLKComplicationServer.sharedInstance()
-//            for complication in complicationServer.activeComplications! {
-//                complicationServer.extendTimeline(for: complication)
-//            }
-//        }
-//        completionHandler()
-//        
-//    }
-//
-//    func setupObserverQueries(){
-//        guard let sampleType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) else {
-//            fatalError("*** This method should never fail ***")
-//        }
-//        
-//        let stepObserverQuery = HKObserverQuery(sampleType: sampleType, predicate: nil) {
-//            query, completionHandler, error in
-//            
-//            if error != nil {
-//                print("*** An error occured while setting up the stepCount observer. \(error?.localizedDescription) ***")
-//                abort()
-//            }
-//            
-//            // Take whatever steps are necessary to update your app's data and UI
-//            // This may involve executing other queries
-//            self.updateStepCount()
-//            
-//            // If you have subscribed for background updates you must call the completion handler here.
-//            completionHandler()
-//        }
-//        
-//        healthStore.execute(stepObserverQuery)
-//    }
-    
-//    func updateStepCount() {
-//        let calendar = NSCalendar.current
-//        
-//        let endDate = Date()
-//        let startDate = calendar.startOfDay(for: endDate)
-//        
-//        let devicePredicate = HKQuery.predicateForObjects(from: [HKDevice.local()])
-//        let datePredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
-//        let queryPredicate = NSCompoundPredicate(andPredicateWithSubpredicates:[datePredicate, devicePredicate])
-//        
-//        guard let sampleType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) else {
-//            fatalError("*** This method should never fail ***")
-//        }
-//        let query = HKStatisticsQuery(quantityType: sampleType,
-//                                      quantitySamplePredicate: queryPredicate,
-//                                      options: .cumulativeSum) { query, result, error in
-//                                        
-//                                        guard let quantity = result?.sumQuantity() else {
-//                                            fatalError("An error occured fetching the user's step count data. The error was: \(error?.localizedDescription)");
-//                                        }
-//                                        
-//                                        let unit = HKUnit.count()
-//                                        let totalSteps = quantity.doubleValue(for: unit)
-//                                        print("TOTAL STEPS FOR DAY:")
-//                                        print(totalSteps)
-//                                        
-//                                        DispatchQueue.main.async { [weak self] in
-//                                            guard let strongSelf = self, !strongSelf.isPaused else { return }
-//                                            let prevSteps = strongSelf.totalModSteps()
-//                                            strongSelf.setTotalSteps(steps: totalSteps)
-//                                            strongSelf.updateLabels()
-//                                            if (Int(strongSelf.totalModSteps() / 1000)  > Int(prevSteps / 1000)) {
-//                                                strongSelf.notifyUser()
-//                                            }
-//                                            UserDefaults.standard.set(String(format: "%.0f", strongSelf.totalModSteps()), forKey: "stepCount")
-//                                            let complicationServer = CLKComplicationServer.sharedInstance()
-//                                            for complication in complicationServer.activeComplications! {
-//                                                complicationServer.reloadTimeline(for: complication)
-//                                            }
-//                                            _ = WatchSessionManager.sharedManager.transferUserInfo(userInfo: ["stepCount" : strongSelf.totalSteps() as AnyObject, "uid":UserDefaults.standard.integer(forKey: "participantNumber") as AnyObject])
-//                                            strongSelf.sendDataToServer(stepCount: strongSelf.totalSteps(), heartRate: nil, date: endDate)
-//                                        }
-//                                        
-//        }
-//        
-//        healthStore.execute(query)
-//    }
-//
-    
-    private func totalCalories() -> Double {
-        return totalEnergyBurned.doubleValue(for: HKUnit.kilocalorie())
-    }
     
     public func totalSteps() -> Double {
         return totalStepCount.doubleValue(for: HKUnit.count())
@@ -198,160 +80,14 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         
     }
     
-    private func totalMeters() -> Double {
-        return totalDistance.doubleValue(for: HKUnit.meter())
-    }
-    
-    
-    private func setTotalCalories(calories: Double) {
-        totalEnergyBurned = HKQuantity(unit: HKUnit.kilocalorie(), doubleValue: calories)
-    }
-    
     private func setTotalSteps(steps: Double) {
         totalStepCount = HKQuantity(unit: HKUnit.count(), doubleValue: steps)
     }
-    
-    private func setTotalMeters(meters: Double) {
-        totalDistance = HKQuantity(unit: HKUnit.meter(), doubleValue: meters)
-    }
-    
-    // MARK: IB Actions
-    
-//    @IBAction func didTapPauseResumeButton() {
-//        if let session = workoutSession {
-//            switch session.state {
-//            case .running:
-//                healthStore.pause(_: session)
-//            case .paused:
-//                healthStore.resumeWorkoutSession(_: session)
-//            default:
-//                break
-//            }
-//        }
-//    }
-//    
-//    @IBAction func didTapStopButton() {
-//        workoutEndDate = Date()
-//        
-//        // End the Workout Session
-//        healthStore.end(workoutSession!)
-//    }
-//    
-//    @IBAction func didTapMarkerButton() {
-//        let markerEvent = HKWorkoutEvent(type: .marker, date: Date())
-//        workoutEvents.append(markerEvent)
-//        notifyEvent(markerEvent)
-//    }
     
     // MARK: Convenience
     
     func updateLabels() {
         modifiedStepCountLabel.setText(format(steps: totalModSteps()))
-    }
-    
-//    func updateState() {
-//        if let session = workoutSession {
-//            switch session.state {
-//                case .running:
-//                    setTitle("Active Workout")
-//                    parentConnector.send(state: "running")
-//                    pauseResumeButton.setTitle("Pause")
-//                
-//                case .paused:
-//                    setTitle("Paused Workout")
-//                    parentConnector.send(state: "paused")
-//                    pauseResumeButton.setTitle("Resume")
-//                
-//                case .notStarted, .ended:
-//                    setTitle("Workout")
-//                    parentConnector.send(state: "ended")
-//            }
-//        }
-//    }
-    
-    func notifyEvent(_: HKWorkoutEvent) {
-        weak var weakSelf = self
-
-        DispatchQueue.main.async {
-            weakSelf?.markerLabel.setAlpha(1)
-            WKInterfaceDevice.current().play(.notification)
-            DispatchQueue.main.asyncAfter (deadline: .now()+1) {
-                weakSelf?.markerLabel.setAlpha(0)
-            }
-        }
-    }
-    
-    func vibWatch() {
-        DispatchQueue.main.async {
-            WKInterfaceDevice.current().play(.notification)
-        }
-    }
-    
-    // MARK: Data Queries
-    
-    func startAccumulatingData(startDate: Date) {
-        // startQuery(quantityTypeIdentifier: HKQuantityTypeIdentifier.distanceWalkingRunning)
-        // startQuery(quantityTypeIdentifier: HKQuantityTypeIdentifier.activeEnergyBurned)
-        startQuery(quantityTypeIdentifier: HKQuantityTypeIdentifier.stepCount)
-        //startTimer()
-    }
-    
-    func startQuery(quantityTypeIdentifier: HKQuantityTypeIdentifier) {
-        print (quantityTypeIdentifier)
-        let datePredicate = HKQuery.predicateForSamples(withStart: queryStartDate, end: nil, options: .strictStartDate) // REPLACED OPTIONS WITH [] IF NOT WORKING
-        let devicePredicate = HKQuery.predicateForObjects(from: [HKDevice.local()])
-        let queryPredicate = NSCompoundPredicate(andPredicateWithSubpredicates:[datePredicate, devicePredicate])
-        
-        let updateHandler: ((HKAnchoredObjectQuery, [HKSample]?, [HKDeletedObject]?, HKQueryAnchor?, Error?) -> Void) = { query, samples, deletedObjects, queryAnchor, error in
-            self.process(samples: samples, quantityTypeIdentifier: quantityTypeIdentifier)
-        }
-        
-        let query = HKAnchoredObjectQuery(type: HKObjectType.quantityType(forIdentifier: quantityTypeIdentifier)!,
-                                          predicate: queryPredicate,
-                                          anchor: nil,
-                                          limit: HKObjectQueryNoLimit,
-                                          resultsHandler: updateHandler)
-        query.updateHandler = updateHandler
-        healthStore.execute(query)
-        
-        activeDataQueries.append(query)
-    }
-    
-    func process(samples: [HKSample]?, quantityTypeIdentifier: HKQuantityTypeIdentifier) {
-        print(samples)
-        DispatchQueue.main.async { [weak self] in
-            guard let strongSelf = self, !strongSelf.isPaused else { return }
-            
-            if let quantitySamples = samples as? [HKQuantitySample] {
-                for sample in quantitySamples {
-                    if quantityTypeIdentifier == HKQuantityTypeIdentifier.distanceWalkingRunning {
-                        let newMeters = sample.quantity.doubleValue(for: HKUnit.meter())
-                        strongSelf.setTotalMeters(meters: strongSelf.totalMeters() + newMeters)
-                    } else if quantityTypeIdentifier == HKQuantityTypeIdentifier.activeEnergyBurned {
-                        let newKCal = sample.quantity.doubleValue(for: HKUnit.kilocalorie())
-                        strongSelf.setTotalCalories(calories: strongSelf.totalCalories() + newKCal)
-                    } else if quantityTypeIdentifier == HKQuantityTypeIdentifier.stepCount {
-                        let newSteps = sample.quantity.doubleValue(for: HKUnit.count())
-                        strongSelf.setTotalSteps(steps: strongSelf.totalSteps() + newSteps)
-                        
-                        UserDefaults.standard.set(String(format: "%.0f", strongSelf.totalModSteps()), forKey: "stepCount")
-                        
-                        let complicationServer = CLKComplicationServer.sharedInstance()
-                        for complication in complicationServer.activeComplications! {
-                            complicationServer.reloadTimeline(for: complication)
-                        }
-                        _ = WatchSessionManager.sharedManager.transferUserInfo(userInfo: ["stepCount" : strongSelf.totalSteps() as AnyObject, "uid":UserDefaults.standard.integer(forKey: "participantNumber") as AnyObject])
-                        strongSelf.sendDataToServer(stepCount: strongSelf.totalSteps(), heartRate: nil, date: Date())
-                        if (strongSelf.totalSteps() >= Double(strongSelf.stepIncrements * 10)){
-                            strongSelf.stepIncrements += 1
-                            strongSelf.vibWatch()
-                        }
-                    }
-                }
-                
-                strongSelf.updateLabels()
-            }
-        }
     }
     
     func sendDataToServer(stepCount: Double?, heartRate: Double?, date:Date!) {
@@ -375,70 +111,26 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
             print(bodyString)
         }
 
-        // Create NSURL Ibject
         let myUrl = URL(string: urlWithParams);
         
-        // Creaste URL Request
         var request = URLRequest(url:myUrl!);
-//        let bodyString = "{\"stepCount\" : \(stepCount), \"uid\" : 9}"
         request.httpBody = bodyString.data(using: .utf8)
-        // Set request HTTP method to GET. It could be POST as well
         request.httpMethod = "POST"
         
         let task = URLSession.shared.dataTask(with: request) {
             data, response, error in
             
-            // Check for error
             if error != nil
             {
                 print("error=\(error)")
                 return
             }
             
-            // Print out response string
             let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             print("responseString = \(responseString)")
-            
-            
-            // Convert server json response to NSDictionary
-//            do {
-//                if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
-//                    
-//                    // Print out dictionary
-//                    print(convertedJsonIntoDict)
-//                    
-//                    // Get value by key
-//                    let firstNameValue = convertedJsonIntoDict["userName"] as? String
-//                    print(firstNameValue!)
-//                    
-//                }
-//            } catch let error as NSError {
-//                print(error.localizedDescription)
-//            }
-            
         }
         
         task.resume()
-    }
-    
-    func stopAccumulatingData() {
-        for query in activeDataQueries {
-            healthStore.stop(query)
-        }
-        
-        activeDataQueries.removeAll()
-    }
-    
-    func pauseAccumulatingData() {
-        DispatchQueue.main.sync {
-            isPaused = true
-        }
-    }
-    
-    func resumeAccumulatingData() {
-        DispatchQueue.main.sync {
-            isPaused = false
-        }
     }
     
     func notifyUser() {
@@ -514,7 +206,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                             let totalSteps = quantity.doubleValue(for: unit)
                                             
                                             DispatchQueue.main.async { [weak self] in
-                                                guard let strongSelf = self, !strongSelf.isPaused else { return }
+                                                guard let strongSelf = self else { return }
                                                 strongSelf.setTotalSteps(steps: totalSteps)
                                                 strongSelf.updateLabels()
                                                 UserDefaults.standard.set(String(format: "%.0f", strongSelf.totalModSteps()), forKey: "stepCount")
@@ -540,8 +232,6 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         let calendar = NSCalendar.current
         
         let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
-
-//        let startDate = calendar.startOfDay(for: endDate)
         
         guard let heartSampleType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.heartRate) else {
             fatalError("*** This method should never fail ***")
@@ -561,7 +251,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
             }
             
             DispatchQueue.main.async { [weak self] in
-                guard let strongSelf = self, !strongSelf.isPaused else { return }
+                guard let strongSelf = self else { return }
                 var latest: Date?
                 latest = nil
                 for sample in samples {
@@ -596,8 +286,6 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         guard let stepSampleType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) else {
             fatalError("*** This method should never fail ***")
         }
-        
-        //let stepStartDate = UserDefaults.standard.object(forKey: "stepLastDate") as! Date
         let stepStartDate = calendar.startOfDay(for: endDate)
         let stepDatePredicate = HKQuery.predicateForSamples(withStart: stepStartDate, end: endDate, options: .strictStartDate)
         let stepPredicate = NSCompoundPredicate(andPredicateWithSubpredicates:[stepDatePredicate, devicePredicate])
@@ -617,7 +305,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                             print(totalSteps)
                                             
                                             DispatchQueue.main.async { [weak self] in
-                                                guard let strongSelf = self, !strongSelf.isPaused else { return }
+                                                guard let strongSelf = self else { return }
                                                 let prevSteps = strongSelf.totalModSteps()
                                                 strongSelf.setTotalSteps(steps: totalSteps)
                                                 strongSelf.updateLabels()
@@ -652,7 +340,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
             let completion: (Error?) -> Void = { (error) in
                 // Handle error if needed
                 if (error == nil) {
-                    print("successfully scheduled background task, use the crown to send the app to the background and wait for handle:BackgroundTasks to fire.")
+                    print("Successfully scheduled background task")
                 } else {
                     print(error ?? "Error scheduling next background refresh")
                 }
@@ -663,10 +351,6 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                 scheduledCompletion: completion
             )
         }
-    }
-    
-    func heartRateQuery() {
-        
     }
 
 

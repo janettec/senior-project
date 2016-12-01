@@ -16,11 +16,7 @@ class ConfigurationInterfaceController: WKInterfaceController {
     
     var selectedParticipantNumber: Int
     
-//    var selectedLocationType: HKWorkoutSessionLocationType
-    
-    let participantNumbers: [Int] = [1, 2, 3]
-    
-//    let locationTypes: [HKWorkoutSessionLocationType] = [.unknown, .indoor, .outdoor]
+    var participantNumbers: [Int] = []
     
     // MARK: IB Outlets
     
@@ -31,9 +27,8 @@ class ConfigurationInterfaceController: WKInterfaceController {
     // MARK: Initialization
     
     override init() {
+        participantNumbers += 1...70
         selectedParticipantNumber = participantNumbers[0]
-//        selectedLocationType = locationTypes[0]
-        
         super.init()
     }
     
@@ -48,28 +43,15 @@ class ConfigurationInterfaceController: WKInterfaceController {
             WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: [workoutConfiguration])
         }
         
-        // Populate the activity type picker
         let participantNumberPickerItems: [WKPickerItem] = participantNumbers.map {number in
             let pickerItem = WKPickerItem()
             pickerItem.title = String(number)
             return pickerItem
         }
-//        let activityTypePickerItems: [WKPickerItem] = activityTypes.map {type in
-//            let pickerItem = WKPickerItem()
-//            pickerItem.title = format(activityType: type)
-//            return pickerItem
-//        }
+
         participantNumberPicker.setItems(participantNumberPickerItems)
         
-        // Populate the location type picker
-//        let locationTypePickerItems: [WKPickerItem] = locationTypes.map {type in
-//            let pickerItem = WKPickerItem()
-//            pickerItem.title = format(locationType: type)
-//            return pickerItem
-//        }
-//        locationTypePicker.setItems(locationTypePickerItems)
-        
-        setTitle("Speedy Sloth")
+        setTitle("AccurateSteps")
     }
     
     private func requestAccessToHealthKit() {
@@ -101,14 +83,10 @@ class ConfigurationInterfaceController: WKInterfaceController {
     @IBAction func participantNumberPickerSelectedItemChanged(value: Int) {
         selectedParticipantNumber = participantNumbers[value]
     }
-        
-//    @IBAction func locationTypePickerSelectedItemChanged(value: Int) {
-//        selectedLocationType = locationTypes[value]
-//    }
     
     @IBAction func didTapStartButton() {
         // Create workout configuration
-        let workoutConfiguration = HKWorkoutConfiguration()
+//        let workoutConfiguration = HKWorkoutConfiguration()
 //        workoutConfiguration.activityType = selectedActivityType
 //        workoutConfiguration.locationType = selectedLocationType
         UserDefaults.standard.set(selectedParticipantNumber, forKey: "participantNumber")
@@ -118,7 +96,7 @@ class ConfigurationInterfaceController: WKInterfaceController {
         requestAccessToHealthKit()
         requestAllowNotifications()
         // Pass configuration to next interface controller
-        WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: [workoutConfiguration])
+        WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: nil)
     }
     
 }
