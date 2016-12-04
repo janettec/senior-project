@@ -99,5 +99,53 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SpeedySloth WatchKit Extension/WorkoutInterfaceController.swift"
+            timestampString = "502411896.95225"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
+            landmarkName = "refreshStepCount()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SpeedySloth_WatchKit_Extension.WorkoutInterfaceController.(refreshStepCount () -&gt; ()).(closure #1)"
+                  moduleName = "SpeedySloth WatchKit Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Janette/Desktop/cs191w/senior-project/SpeedySlothUsingHealthKittobuildaworkoutappforAppleWatch/SpeedySloth/SpeedySloth%20WatchKit%20Extension/WorkoutInterfaceController.swift"
+                  timestampString = "502411897.012847"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "212"
+                  endingLineNumber = "212"
+                  offsetFromSymbolStart = "1764">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[1] = Value Promoted from Box&gt; of SpeedySloth_WatchKit_Extension.WorkoutInterfaceController.(refreshStepCount () -&gt; ()).(closure #1).(closure #1)"
+                  moduleName = "SpeedySloth WatchKit Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Janette/Desktop/cs191w/senior-project/SpeedySlothUsingHealthKittobuildaworkoutappforAppleWatch/SpeedySloth/SpeedySloth%20WatchKit%20Extension/WorkoutInterfaceController.swift"
+                  timestampString = "502411897.015903"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "212"
+                  endingLineNumber = "212"
+                  offsetFromSymbolStart = "28">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

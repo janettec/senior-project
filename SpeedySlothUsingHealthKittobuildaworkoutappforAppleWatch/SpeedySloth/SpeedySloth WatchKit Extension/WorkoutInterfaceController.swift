@@ -197,13 +197,17 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                           quantitySamplePredicate: stepPredicate,
                                           options: .cumulativeSum) { query, result, error in
                                             
-                                            guard let quantity = result?.sumQuantity() else {
+                                            let quantity = result?.sumQuantity()
+                                            
+                                            var totalSteps = 0.0
+                                            
+                                            if (quantity != nil && error == nil) {
+                                                let unit = HKUnit.count()
+                                                totalSteps = (quantity?.doubleValue(for: unit))!
+                                            } else if (quantity == nil && error != nil) {
                                                 print("An error occured fetching the user's step count data. The error was: \(error?.localizedDescription)");
                                                 return
                                             }
-                                            
-                                            let unit = HKUnit.count()
-                                            let totalSteps = quantity.doubleValue(for: unit)
                                             
                                             DispatchQueue.main.async { [weak self] in
                                                 guard let strongSelf = self else { return }
@@ -294,13 +298,18 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                           quantitySamplePredicate: stepPredicate,
                                           options: .cumulativeSum) { query, result, error in
                                             
-                                            guard let quantity = result?.sumQuantity() else {
+                                            let quantity = result?.sumQuantity()
+                                            
+                                            var totalSteps = 0.0
+                                            
+                                            if (quantity != nil && error == nil) {
+                                                let unit = HKUnit.count()
+                                                totalSteps = (quantity?.doubleValue(for: unit))!
+                                            } else if (quantity == nil && error != nil) {
                                                 print("An error occured fetching the user's step count data. The error was: \(error?.localizedDescription)");
                                                 return
                                             }
                                             
-                                            let unit = HKUnit.count()
-                                            let totalSteps = quantity.doubleValue(for: unit)
                                             print("TOTAL STEPS FOR DAY:")
                                             print(totalSteps)
                                             
