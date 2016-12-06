@@ -16,11 +16,14 @@ import UserNotifications
 class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UNUserNotificationCenterDelegate {
     // MARK: Properties
     
-    let timeBetweenRefresh = 5 * 60.0
+    let timeBetweenRefresh = 5.0 * 60.0
     
     let healthStore = HKHealthStore()
     
     var activeDataQueries = [HKQuery]()
+    
+    let stepType = 0 as AnyObject
+    let heartType = 1 as AnyObject
     
     var totalStepCount = HKQuantity(unit: HKUnit.count(), doubleValue: 0)
     
@@ -42,13 +45,20 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         scheduleBackgroundRefresh(preferredDate: future)
     }
     override func willActivate() {
-        refreshStepCount()
+        //refreshStepCount()
         WatchSessionManager.sharedManager.startSession()
+        let future = Date(timeIntervalSinceNow: timeBetweenRefresh)
+        scheduleBackgroundRefresh(preferredDate: future)
         super.willActivate()
     }
     
     override func didAppear() {
-        refreshStepCount()
+       // refreshStepCount()
+    }
+    
+    override func willDisappear() {
+        let future = Date(timeIntervalSinceNow: timeBetweenRefresh)
+        scheduleBackgroundRefresh(preferredDate: future)
     }
     // MARK: Totals
     
@@ -90,6 +100,14 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         modifiedStepCountLabel.setText(format(steps: totalModSteps()))
     }
     
+    func sendDataToPhone(stepCount: Double?, heartRate: Double?, date:Date!) {
+        if (stepCount != nil && heartRate == nil) {
+         _ = WatchSessionManager.sharedManager.transferUserInfo(userInfo: ["stepCount" : String(format: "%.0f", stepCount!) as AnyObject, "date":String(format:"%f", (date.timeIntervalSince1970)) as AnyObject, "type":stepType])
+        } else if (stepCount == nil && heartRate != nil){
+        _ = WatchSessionManager.sharedManager.transferUserInfo(userInfo: ["heartRate" : String(format:"%f", heartRate!) as AnyObject, "date":String(format:"%f", (date.timeIntervalSince1970)) as AnyObject, "type":heartType])
+        }
+    }
+    
     func sendDataToServer(stepCount: Double?, heartRate: Double?, date:Date!) {
         let scriptUrl = "https://steps-4a070.firebaseio.com/users/9.json"
         let uid = String(format:"%d", UserDefaults.standard.integer(forKey: "participantNumber"))
@@ -104,7 +122,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
             urlWithParams = scriptUrl //+ "?stepCount=\(stepCountString)&uid=9"
             bodyString = "{\"stepCount\" : \(stepCountString), \"uid\" : \(uid), \"time\" : \(timeString)}"
             print(bodyString)
-        } else {
+        } else if (heartRate != nil){
             heartRateString = String(format: "%.0f", heartRate!)
             urlWithParams = scriptUrl //+ "?heartRate=\(heartRateString)&uid=9"
             bodyString = "{\"heartRate\" : \(heartRateString), \"uid\" : \(uid), \"time\" : \(timeString)}"
@@ -140,7 +158,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         content.body = String(format: "Another 1000 steps! Current step count: %0.f", self.totalModSteps())
         content.sound = UNNotificationSound.default()
         
-        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 2.0, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5.0, repeats: false)
         let request = UNNotificationRequest.init(identifier: String(format:"%f", (Date().timeIntervalSince1970)), content: content, trigger: trigger)
         
         let center = UNUserNotificationCenter.current()
@@ -185,6 +203,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         let endDate = Date()
         let calendar = NSCalendar.current
         let devicePredicate = HKQuery.predicateForObjects(from: [HKDevice.local()])
+
         let stepStartDate = calendar.startOfDay(for: endDate)
         let stepDatePredicate = HKQuery.predicateForSamples(withStart: stepStartDate, end: endDate, options: .strictStartDate)
         let stepPredicate = NSCompoundPredicate(andPredicateWithSubpredicates:[stepDatePredicate, devicePredicate])
@@ -211,13 +230,20 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                             
                                             DispatchQueue.main.async { [weak self] in
                                                 guard let strongSelf = self else { return }
+                                                let prevSteps = strongSelf.totalModSteps()
                                                 strongSelf.setTotalSteps(steps: totalSteps)
                                                 strongSelf.updateLabels()
+                                                if (Int(strongSelf.totalModSteps() / 1000)  > Int(prevSteps / 1000)) {
+                                                    strongSelf.notifyUser()
+                                                }
                                                 UserDefaults.standard.set(String(format: "%.0f", strongSelf.totalModSteps()), forKey: "stepCount")
                                                 let complicationServer = CLKComplicationServer.sharedInstance()
                                                 for complication in complicationServer.activeComplications! {
                                                     complicationServer.reloadTimeline(for: complication)
                                                 }
+                                                
+                                                strongSelf.sendDataToServer(stepCount: totalSteps, heartRate: nil, date: endDate)
+                                                strongSelf.sendDataToPhone(stepCount: totalSteps, heartRate: nil, date: endDate)
                                             }
                                             
         }
@@ -269,7 +295,10 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                     }
                     let newHeart = sample.quantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute()))
                     print(newHeart)
+                    //if (newHeart != nil) {
                     strongSelf.sendDataToServer(stepCount: nil, heartRate: newHeart, date:sample.startDate)
+                    strongSelf.sendDataToPhone(stepCount: nil, heartRate: newHeart, date: sample.startDate)
+                    //}
                 }
                 if (latest != nil){
                     UserDefaults.standard.set(latest, forKey: "heartLastDate")
@@ -310,6 +339,8 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                                 return
                                             }
                                             
+                                            totalSteps = 5000.0
+                                            
                                             print("TOTAL STEPS FOR DAY:")
                                             print(totalSteps)
                                             
@@ -318,7 +349,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                                 let prevSteps = strongSelf.totalModSteps()
                                                 strongSelf.setTotalSteps(steps: totalSteps)
                                                 strongSelf.updateLabels()
-                                                if (Int(strongSelf.totalModSteps() / 1000)  > Int(prevSteps / 1000)) {
+                                                if (Int(strongSelf.totalModSteps() / 10)  > Int(prevSteps / 10)) {
                                                     strongSelf.notifyUser()
                                                 }
                                                 UserDefaults.standard.set(String(format: "%.0f", strongSelf.totalModSteps()), forKey: "stepCount")
@@ -326,8 +357,8 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                                 for complication in complicationServer.activeComplications! {
                                                     complicationServer.reloadTimeline(for: complication)
                                                 }
-                                                _ = WatchSessionManager.sharedManager.transferUserInfo(userInfo: ["stepCount" : strongSelf.totalSteps() as AnyObject, "uid":UserDefaults.standard.integer(forKey: "participantNumber") as AnyObject])
-                                                strongSelf.sendDataToServer(stepCount: strongSelf.totalSteps(), heartRate: nil, date: endDate)
+                                                strongSelf.sendDataToPhone(stepCount: totalSteps, heartRate: nil, date: endDate)
+                                                strongSelf.sendDataToServer(stepCount: totalSteps, heartRate: nil, date: endDate)
                                                 
                                                 if (heartFinished) {
                                                     for task : WKRefreshBackgroundTask in backgroundTasks {
