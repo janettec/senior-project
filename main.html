@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+<script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAYUevv9waRH_pZ02u0tUPKoiEmRMtIr8s",
+    authDomain: "steps-4a070.firebaseapp.com",
+    databaseURL: "https://steps-4a070.firebaseio.com",
+    storageBucket: "steps-4a070.appspot.com",
+    messagingSenderId: "924524322791"
+  };
+  firebase.initializeApp(config);
+
+  function getQuery(q) {
+   return (window.location.search.match(new RegExp('[?&]' + q + '=([^&]+)')) || [, null])[1];
+  }
+
+  function writeNewData(uid, stepCount) {
+    var userData = {
+      uid: uid,
+      stepCount: stepCount,
+    };
+    var newPacketKey = firebase.database().ref().child('/users/' + uid + '/').push().key;
+    var updates = {};
+    updates['/users/' + uid + '/' + newPacketKey] = userData;
+    return firebase.database().ref().update(updates);
+  }
+    
+  if (getQuery('uid') !== null) {
+    writeNewData(getQuery('uid'), getQuery('stepCount'));
+  }
+
+  var introString = "Showing results for "; 
+  if (getQuery('participant')) {
+    introString += "participant " + getQuery('participant');
+  } else {
+    introString += "all participants"
+  }
+  if (getQuery('start') && getQuery('end')) {
+    introString += " from " + getQuery('start') + " to " + getQuery('end');
+  } else {
+    introString += " for all days"
+  }
+
+  firebase.database().ref('/users/').once('value').then(function(jsonOfSnapshots) {
+    var allSnapshots = jsonOfSnapshots.val();
+    var lastTimeHeart = {};
+    var lastStepCount = {};
+    for (var oneSnapshot in allSnapshots) {
+      var snapshot = allSnapshots[oneSnapshot];
+      for (var packet in snapshot) {
+        var step = snapshot[packet]['stepCount'];
+        var user = snapshot[packet]['uid'];
+        if ((step && (!lastStepCount[user] || step > lastStepCount[user])) || 
+           (!step && (!lastTimeHeart[user] || snapshot[packet]['time'] > lastTimeHeart[user]))) {
+            if (step) {
+                lastStepCount[user] = step;
+            } else {
+                lastTimeHeart[user] = snapshot[packet]['time'];
+            }
+            var userOk = !getQuery("participant") || user == getQuery("participant");
+            var dateUsed = getQuery("start");
+            var dateOk = !dateUsed || (new Date(getQuery("start"))).setHours(24, 0, 0, 0) < snapshot[packet]["time"]*1000 && (new Date(getQuery("end"))).setHours(48, 0, 0, 0) > snapshot[packet]["time"]*1000;
+            console.log(userOk);
+            console.log(dateOk);
+            if (userOk && dateOk) {
+                var table = step ?
+                    document.getElementById("stepsTable") : document.getElementById("heartTable");
+                var row = table.insertRow(1);
+                var participantCell = row.insertCell(0);
+                var timeCell = row.insertCell(1);
+                var dataCell = row.insertCell(2);
+                participantCell.innerHTML = snapshot[packet]['uid'];
+                if (user == 6) { console.log(snapshot[packet]['heartRate']); }
+                timeCell.innerHTML = new Date(snapshot[packet]['time'] * 1000);
+                dataCell.innerHTML = step ? 
+                    snapshot[packet]['stepCount'] : snapshot[packet]['heartRate'];
+            }
+        }
+      }
+    }
+  });
+
+  window.onload = function() {
+    var introDiv = document.getElementById("introBox");
+    introDiv.innerHTML = introString;
+  }
+  
+    
+</script>
+<form>
+  Participant Number: <input type="text" name="participant"><br>
+  From: <input type="date" name="start"><br>
+  To: <input type="date" name="end"><br>
+  <input type="submit" value="Apply Filters">
+</form>
+<form>
+  <input type="submit" value ="Show All">
+</form>
+<p id="introBox"/>
+<table id="stepsTable">
+<tr>
+<th>Participant</th>
+<th>Time</th>
+<th>Steps</th>
+</tr>
+</table>
+<table id="heartTable">
+<tr>
+<th>Participant</th>
+<th>Time</th>
+<th>Heart Rate</th>
+</tr>
+<table>
+</body>
+</html>
+
