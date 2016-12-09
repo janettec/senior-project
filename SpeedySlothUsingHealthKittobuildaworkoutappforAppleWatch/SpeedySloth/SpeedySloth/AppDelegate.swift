@@ -36,6 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    // Function called when watch requests access to HealthKit. Triggers notification on phone to 
+    // give HealthKit access
     func applicationShouldRequestHealthAuthorization(_ application: UIApplication) {
         let healthStore = HKHealthStore()
         healthStore.handleAuthorizationForExtension { (success, error) -> Void in

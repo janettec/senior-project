@@ -37,7 +37,7 @@ class StepsInterfaceController: WKInterfaceController, WKExtensionDelegate, UNUs
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        WKExtension.shared().delegate = self
+        WKExtension.shared().delegate = self // Allows this class to handle background refreshes ('handle:' function)
         setTotalSteps(steps: modToActualSteps(modified: Double(UserDefaults.standard.string(forKey: "stepCount")!)!))
         updateLabels()
         let future = Date(timeIntervalSinceNow: timeBetweenRefresh)
