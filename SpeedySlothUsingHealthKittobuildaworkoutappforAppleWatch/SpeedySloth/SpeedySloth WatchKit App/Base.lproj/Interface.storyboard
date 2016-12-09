@@ -34,10 +34,10 @@
             </objects>
             <point key="canvasLocation" x="171" y="141"/>
         </scene>
-        <!--WorkoutInterfaceController-->
+        <!--StepsInterfaceController-->
         <scene sceneID="n0q-AO-fFK">
             <objects>
-                <controller identifier="WorkoutInterfaceController" id="3AD-3g-W6O" customClass="WorkoutInterfaceController" customModule="SpeedySloth_WatchKit_Extension">
+                <controller identifier="StepsInterfaceController" id="3AD-3g-W6O" customClass="StepsInterfaceController" customModule="SpeedySloth_WatchKit_Extension">
                     <items>
                         <label alignment="center" verticalAlignment="center" text="Step Count" textAlignment="center" id="Eao-ZG-tZX" userLabel="Step Count Label">
                             <accessibilityTraits key="accessibilityTraits" staticText="YES" notEnabled="YES"/>

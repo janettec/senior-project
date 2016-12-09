@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedySloth WatchKit Extension/ConfigurationInterfaceController.swift"
-            timestampString = "502260865.014745"
+            timestampString = "502955979.00934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "awake(withContext:)"
             landmarkType = "7">
          </BreakpointContent>

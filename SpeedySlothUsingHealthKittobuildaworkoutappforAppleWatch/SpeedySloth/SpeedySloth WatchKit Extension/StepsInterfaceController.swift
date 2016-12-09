@@ -13,7 +13,7 @@ import ClockKit
 import WatchConnectivity
 import UserNotifications
 
-class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UNUserNotificationCenterDelegate {
+class StepsInterfaceController: WKInterfaceController, WKExtensionDelegate, UNUserNotificationCenterDelegate {
     // MARK: Properties
     
     let timeBetweenRefresh = 5.0 * 60.0
@@ -45,7 +45,6 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         scheduleBackgroundRefresh(preferredDate: future)
     }
     override func willActivate() {
-        //refreshStepCount()
         WatchSessionManager.sharedManager.startSession()
         let future = Date(timeIntervalSinceNow: timeBetweenRefresh)
         scheduleBackgroundRefresh(preferredDate: future)
@@ -53,7 +52,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
     }
     
     override func didAppear() {
-       // refreshStepCount()
+        // Pass
     }
     
     override func willDisappear() {
@@ -66,18 +65,26 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         return totalStepCount.doubleValue(for: HKUnit.count())
     }
     
+    // Returns the modified step count based on pariticipant number
     public func totalModSteps() -> Double {
         let partNum = UserDefaults.standard.integer(forKey: "participantNumber")
         if (partNum % 3 == 0){
-            return self.totalSteps() * 1.4
+            return self.totalSteps() * 1.4 // Inflated
         } else if (partNum % 3 == 1){
-            return self.totalSteps() * 0.6
+            return self.totalSteps() * 0.6 // Deflated
         } else {
-            return self.totalSteps()
+            return self.totalSteps() // Unchanged
         }
         
     }
     
+    private func setTotalSteps(steps: Double) {
+        totalStepCount = HKQuantity(unit: HKUnit.count(), doubleValue: steps)
+    }
+    
+    // MARK: Convenience
+    
+    // Convenience method to convert modified step count to actual step count
     public func modToActualSteps(modified: Double) -> Double {
         let partNum = UserDefaults.standard.integer(forKey: "participantNumber")
         if (partNum % 3 == 0){
@@ -90,16 +97,11 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         
     }
     
-    private func setTotalSteps(steps: Double) {
-        totalStepCount = HKQuantity(unit: HKUnit.count(), doubleValue: steps)
-    }
-    
-    // MARK: Convenience
-    
     func updateLabels() {
         modifiedStepCountLabel.setText(format(steps: totalModSteps()))
     }
     
+    // Sends data to phone to write to logs
     func sendDataToPhone(stepCount: Double?, heartRate: Double?, date:Date!) {
         if (stepCount != nil && heartRate == nil) {
          _ = WatchSessionManager.sharedManager.transferUserInfo(userInfo: ["stepCount" : String(format: "%.0f", stepCount!) as AnyObject, "date":String(format:"%f", (date.timeIntervalSince1970)) as AnyObject, "type":stepType])
@@ -108,6 +110,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         }
     }
     
+    // Sends data to server
     func sendDataToServer(stepCount: Double?, heartRate: Double?, date:Date!) {
         let scriptUrl = "https://accuratesteps-1bc31.firebaseio.com/"
         let uid = String(format:"%d", UserDefaults.standard.integer(forKey: "participantNumber"))
@@ -151,6 +154,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         task.resume()
     }
     
+    // Schedule notification (for another 1000 steps)
     func notifyUser() {
         let content = UNMutableNotificationContent()
         
@@ -171,6 +175,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         }
     }
     
+    // End of day notification (sent at 11:59pm)
     func scheduleReset() {
         let content = UNMutableNotificationContent()
         
@@ -199,6 +204,8 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         }
     }
     
+    // Function to update step count. Not currently calleb, but can be added to willActivate function if
+    // we want user to be able to see an updated step count when they foreground the app
     func refreshStepCount(){
         let endDate = Date()
         let calendar = NSCalendar.current
@@ -252,6 +259,9 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
 
     }
     
+    // Function to update step count and send steps and heart rate to server/phone all in the background
+    // This function is called by the system when our app is in the background (we ask for this function 
+    // to be called when we call 'scheduleBackgroundRefresh')
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         let future = Date(timeIntervalSinceNow: self.timeBetweenRefresh)
         self.scheduleBackgroundRefresh(preferredDate: future)
@@ -295,10 +305,8 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                     }
                     let newHeart = sample.quantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute()))
                     print(newHeart)
-                    //if (newHeart != nil) {
                     strongSelf.sendDataToServer(stepCount: nil, heartRate: newHeart, date:sample.startDate)
                     strongSelf.sendDataToPhone(stepCount: nil, heartRate: newHeart, date: sample.startDate)
-                    //}
                 }
                 if (latest != nil){
                     UserDefaults.standard.set(latest, forKey: "heartLastDate")

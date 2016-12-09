@@ -8,15 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		291A77F81DCABB6100CA038A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 291A77F71DCABB6100CA038A /* GoogleService-Info.plist */; };
+		29B456921DFA7AFC00D8292C /* StepsInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B456911DFA7AFC00D8292C /* StepsInterfaceController.swift */; };
 		29CF1E0F1DCFEEEF000AC0DC /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CF1E0E1DCFEEEF000AC0DC /* WatchSessionManager.swift */; };
 		29CF1E111DCFF0BA000AC0DC /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CF1E101DCFF0BA000AC0DC /* WatchSessionManager.swift */; };
 		29CF1E131DD006F9000AC0DC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29CF1E121DD006F9000AC0DC /* GoogleService-Info.plist */; };
 		29EB4E221DC01BC900189271 /* Complication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EB4E211DC01BC900189271 /* Complication.swift */; };
 		6EA26AFB1CFD696C001EA81E /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EA26AFA1CFD696C001EA81E /* HealthKit.framework */; };
-		6EA26AFD1CFD6E1B001EA81E /* SummaryInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA26AFC1CFD6E1B001EA81E /* SummaryInterfaceController.swift */; };
 		6EA26AFF1CFE08CC001EA81E /* HKQuantityTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA26AFE1CFE08CC001EA81E /* HKQuantityTypeExtension.swift */; };
 		6ECBB8401CF8E03E003C3D93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBB83F1CF8E03E003C3D93 /* AppDelegate.swift */; };
-		6ECBB8421CF8E03E003C3D93 /* ConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBB8411CF8E03E003C3D93 /* ConfigurationViewController.swift */; };
 		6ECBB8451CF8E03E003C3D93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ECBB8431CF8E03E003C3D93 /* Main.storyboard */; };
 		6ECBB8471CF8E03E003C3D93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ECBB8461CF8E03E003C3D93 /* Assets.xcassets */; };
 		6ECBB84A1CF8E03E003C3D93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ECBB8481CF8E03E003C3D93 /* LaunchScreen.storyboard */; };
@@ -27,9 +26,7 @@
 		6ECBB8631CF8E03F003C3D93 /* ConfigurationInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBB8621CF8E03F003C3D93 /* ConfigurationInterfaceController.swift */; };
 		6ECBB8651CF8E03F003C3D93 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBB8641CF8E03F003C3D93 /* ExtensionDelegate.swift */; };
 		6ECBB8671CF8E03F003C3D93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ECBB8661CF8E03F003C3D93 /* Assets.xcassets */; };
-		6ECBB8771CF8E105003C3D93 /* WorkoutInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBB8761CF8E105003C3D93 /* WorkoutInterfaceController.swift */; };
 		6ECBB87A1CF8E360003C3D93 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECBB8791CF8E360003C3D93 /* HealthKit.framework */; };
-		B67DF2FE1CFFE86500520DA6 /* WorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DF2FD1CFFE86500520DA6 /* WorkoutViewController.swift */; };
 		B69421021D013F6B00293562 /* ParentConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69421011D013F6B00293562 /* ParentConnector.swift */; };
 		B6FAC4F31D07B54400C11376 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FAC4F21D07B54400C11376 /* Utilities.swift */; };
 		B6FAC4F41D07B54C00C11376 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FAC4F21D07B54400C11376 /* Utilities.swift */; };
@@ -80,6 +77,7 @@
 
 /* Begin PBXFileReference section */
 		291A77F71DCABB6100CA038A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		29B456911DFA7AFC00D8292C /* StepsInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepsInterfaceController.swift; sourceTree = "<group>"; };
 		29CF1E0E1DCFEEEF000AC0DC /* WatchSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
 		29CF1E101DCFF0BA000AC0DC /* WatchSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
 		29CF1E121DD006F9000AC0DC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -87,11 +85,9 @@
 		6E98B75A1CF92F35000C40A6 /* SpeedySloth WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "SpeedySloth WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		6EA26AF91CFD696C001EA81E /* SpeedySloth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SpeedySloth.entitlements; sourceTree = "<group>"; };
 		6EA26AFA1CFD696C001EA81E /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		6EA26AFC1CFD6E1B001EA81E /* SummaryInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SummaryInterfaceController.swift; sourceTree = "<group>"; };
 		6EA26AFE1CFE08CC001EA81E /* HKQuantityTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKQuantityTypeExtension.swift; sourceTree = "<group>"; };
 		6ECBB83C1CF8E03E003C3D93 /* SpeedySloth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedySloth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECBB83F1CF8E03E003C3D93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6ECBB8411CF8E03E003C3D93 /* ConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewController.swift; sourceTree = "<group>"; };
 		6ECBB8441CF8E03E003C3D93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6ECBB8461CF8E03E003C3D93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6ECBB8491CF8E03E003C3D93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -105,11 +101,9 @@
 		6ECBB8641CF8E03F003C3D93 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		6ECBB8661CF8E03F003C3D93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6ECBB8681CF8E03F003C3D93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6ECBB8761CF8E105003C3D93 /* WorkoutInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutInterfaceController.swift; sourceTree = "<group>"; };
 		6ECBB8791CF8E360003C3D93 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS3.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		AE05512AA75A3B62F785608A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B5C114CD1D4254EF00072E06 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		B67DF2FD1CFFE86500520DA6 /* WorkoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutViewController.swift; sourceTree = "<group>"; };
 		B69421011D013F6B00293562 /* ParentConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParentConnector.swift; sourceTree = "<group>"; };
 		B6FAC4F21D07B54400C11376 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = Utilities/Utilities.swift; sourceTree = "<group>"; };
 		BDBB414EDFB16D1C1442923D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,8 +177,6 @@
 			isa = PBXGroup;
 			children = (
 				6ECBB83F1CF8E03E003C3D93 /* AppDelegate.swift */,
-				6ECBB8411CF8E03E003C3D93 /* ConfigurationViewController.swift */,
-				B67DF2FD1CFFE86500520DA6 /* WorkoutViewController.swift */,
 				6ECBB8431CF8E03E003C3D93 /* Main.storyboard */,
 				6ECBB8461CF8E03E003C3D93 /* Assets.xcassets */,
 				6ECBB8481CF8E03E003C3D93 /* LaunchScreen.storyboard */,
@@ -210,9 +202,8 @@
 			isa = PBXGroup;
 			children = (
 				6ECBB8641CF8E03F003C3D93 /* ExtensionDelegate.swift */,
+				29B456911DFA7AFC00D8292C /* StepsInterfaceController.swift */,
 				6ECBB8621CF8E03F003C3D93 /* ConfigurationInterfaceController.swift */,
-				6ECBB8761CF8E105003C3D93 /* WorkoutInterfaceController.swift */,
-				6EA26AFC1CFD6E1B001EA81E /* SummaryInterfaceController.swift */,
 				6EA26B001CFE34F9001EA81E /* Utilities */,
 				6ECBB8661CF8E03F003C3D93 /* Assets.xcassets */,
 				6ECBB8681CF8E03F003C3D93 /* Info.plist */,
@@ -435,8 +426,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B67DF2FE1CFFE86500520DA6 /* WorkoutViewController.swift in Sources */,
-				6ECBB8421CF8E03E003C3D93 /* ConfigurationViewController.swift in Sources */,
 				B6FAC4F31D07B54400C11376 /* Utilities.swift in Sources */,
 				6ECBB8401CF8E03E003C3D93 /* AppDelegate.swift in Sources */,
 				29CF1E0F1DCFEEEF000AC0DC /* WatchSessionManager.swift in Sources */,
@@ -447,14 +436,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6EA26AFD1CFD6E1B001EA81E /* SummaryInterfaceController.swift in Sources */,
 				6ECBB8651CF8E03F003C3D93 /* ExtensionDelegate.swift in Sources */,
 				B69421021D013F6B00293562 /* ParentConnector.swift in Sources */,
 				6ECBB8631CF8E03F003C3D93 /* ConfigurationInterfaceController.swift in Sources */,
 				6EA26AFF1CFE08CC001EA81E /* HKQuantityTypeExtension.swift in Sources */,
 				B6FAC4F41D07B54C00C11376 /* Utilities.swift in Sources */,
 				29CF1E111DCFF0BA000AC0DC /* WatchSessionManager.swift in Sources */,
-				6ECBB8771CF8E105003C3D93 /* WorkoutInterfaceController.swift in Sources */,
+				29B456921DFA7AFC00D8292C /* StepsInterfaceController.swift in Sources */,
 				29EB4E221DC01BC900189271 /* Complication.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

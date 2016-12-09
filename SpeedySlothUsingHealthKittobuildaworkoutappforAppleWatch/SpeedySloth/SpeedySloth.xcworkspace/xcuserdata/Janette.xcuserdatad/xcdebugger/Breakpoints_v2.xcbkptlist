@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedySloth WatchKit Extension/ConfigurationInterfaceController.swift"
-            timestampString = "502790154.32041"
+            timestampString = "502955979.00934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "didTapStartButton()"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpeedySloth WatchKit Extension/ConfigurationInterfaceController.swift"
-            timestampString = "502789131.980753"
+            timestampString = "502955979.00934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "requestAccessToHealthKit()"
             landmarkType = "7">
          </BreakpointContent>

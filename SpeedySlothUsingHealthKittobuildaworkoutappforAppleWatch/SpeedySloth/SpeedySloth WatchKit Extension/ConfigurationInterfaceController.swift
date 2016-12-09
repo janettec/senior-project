@@ -22,8 +22,6 @@ class ConfigurationInterfaceController: WKInterfaceController {
     
     @IBOutlet var participantNumberPicker: WKInterfacePicker!
     
-//    @IBOutlet var locationTypePicker: WKInterfacePicker!
-    
     // MARK: Initialization
     
     override init() {
@@ -38,9 +36,9 @@ class ConfigurationInterfaceController: WKInterfaceController {
         super.awake(withContext: context)
         
         let participantNumber = UserDefaults.standard.integer(forKey: "participantNumber")
-        if (participantNumber != 0){
+        if (participantNumber != 0){ // Already set up and picked participant number
             let workoutConfiguration = HKWorkoutConfiguration()
-            WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: [workoutConfiguration])
+            WKInterfaceController.reloadRootControllers(withNames: ["StepsInterfaceController"], contexts: [workoutConfiguration])
         }
         
         let participantNumberPickerItems: [WKPickerItem] = participantNumbers.map {number in
@@ -74,10 +72,6 @@ class ConfigurationInterfaceController: WKInterfaceController {
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if !granted {
                 print(error ?? "Error occured requesting notifications")
-            } else {
-                 DispatchQueue.main.async { [] in
-                    WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: nil)
-                }
             }
         }
     }
@@ -89,18 +83,13 @@ class ConfigurationInterfaceController: WKInterfaceController {
     }
     
     @IBAction func didTapStartButton() {
-        // Create workout configuration
-//        let workoutConfiguration = HKWorkoutConfiguration()
-//        workoutConfiguration.activityType = selectedActivityType
-//        workoutConfiguration.locationType = selectedLocationType
         UserDefaults.standard.set(selectedParticipantNumber, forKey: "participantNumber")
         UserDefaults.standard.set(Date(), forKey: "stepLastDate")
         UserDefaults.standard.set(Date(), forKey: "heartLastDate")
         UserDefaults.standard.set("0", forKey: "stepCount")
-        //requestAccessToHealthKit()
+        requestAccessToHealthKit()
         requestAllowNotifications()
-        // Pass configuration to next interface controller
-        WKInterfaceController.reloadRootControllers(withNames: ["WorkoutInterfaceController"], contexts: nil)
+        WKInterfaceController.reloadRootControllers(withNames: ["StepsInterfaceController"], contexts: nil)
     }
     
 }
