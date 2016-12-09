@@ -109,7 +109,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
     }
     
     func sendDataToServer(stepCount: Double?, heartRate: Double?, date:Date!) {
-        let scriptUrl = "https://steps-4a070.firebaseio.com/users/9.json"
+        let scriptUrl = "https://accuratesteps-1bc31.firebaseio.com/"
         let uid = String(format:"%d", UserDefaults.standard.integer(forKey: "participantNumber"))
         let timeString = String(format:"%f", (date.timeIntervalSince1970))
         print(timeString)
@@ -119,12 +119,12 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
         var bodyString = ""
         if (stepCount != nil) {
             stepCountString = String(format: "%.0f", stepCount!)
-            urlWithParams = scriptUrl //+ "?stepCount=\(stepCountString)&uid=9"
+            urlWithParams = scriptUrl + "stepCount/" + uid + ".json"//+ "?stepCount=\(stepCountString)&uid=9"
             bodyString = "{\"stepCount\" : \(stepCountString), \"uid\" : \(uid), \"time\" : \(timeString)}"
             print(bodyString)
         } else if (heartRate != nil){
             heartRateString = String(format: "%.0f", heartRate!)
-            urlWithParams = scriptUrl //+ "?heartRate=\(heartRateString)&uid=9"
+            urlWithParams = scriptUrl + "heartRate/" + uid + ".json"//+ "?heartRate=\(heartRateString)&uid=9"
             bodyString = "{\"heartRate\" : \(heartRateString), \"uid\" : \(uid), \"time\" : \(timeString)}"
             print(bodyString)
         }
@@ -339,8 +339,6 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                                 return
                                             }
                                             
-                                            totalSteps = 5000.0
-                                            
                                             print("TOTAL STEPS FOR DAY:")
                                             print(totalSteps)
                                             
@@ -349,7 +347,7 @@ class WorkoutInterfaceController: WKInterfaceController, WKExtensionDelegate, UN
                                                 let prevSteps = strongSelf.totalModSteps()
                                                 strongSelf.setTotalSteps(steps: totalSteps)
                                                 strongSelf.updateLabels()
-                                                if (Int(strongSelf.totalModSteps() / 10)  > Int(prevSteps / 10)) {
+                                                if (Int(strongSelf.totalModSteps() / 1000)  > Int(prevSteps / 1000)) {
                                                     strongSelf.notifyUser()
                                                 }
                                                 UserDefaults.standard.set(String(format: "%.0f", strongSelf.totalModSteps()), forKey: "stepCount")
